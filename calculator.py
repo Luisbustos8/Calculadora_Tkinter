@@ -98,7 +98,7 @@ dbuttons = [
 def pinta(valor):
     print(valor)
     return valor
-    
+
 class Controlator(ttk.Frame):
     def __init__(self, parent, **kwargs):
         ttk.Frame.__init__(self, parent, width=272, height=300)
@@ -106,7 +106,7 @@ class Controlator(ttk.Frame):
         d.grid(column=0, row=0, columnspan=4)
 
         for properties in dbuttons:
-            btn = CalcButton(self, properties["text"], pinta, properties.get("W", 1), properties.get("H",1))
+            btn = CalcButton(self, properties["text"], d.paint, properties.get("W", 1), properties.get("H",1))
             btn.grid(column=properties["col"], row=properties["row"], columnspan=properties.get("W",1), rowspan=properties.get("H", 1))
 
 class Display(ttk.Frame):
@@ -119,8 +119,30 @@ class Display(ttk.Frame):
         s.theme_use("alt")
         s.configure("my.TLabel", font= "Helvetica 30", background="black", foreground="white")
 
-        lbl = ttk.Label(self, text="0", anchor=E, style="my.TLabel")
-        lbl.pack(side=TOP, fill=BOTH, expand=True)
+        self.value = "0"
+
+        self.lbl = ttk.Label(self, text=self.value, anchor=E, style="my.TLabel")
+        self.lbl.pack(side=TOP, fill=BOTH, expand=True)
+
+    def paint(self, algo):
+        if algo.isdigit():
+            if self.value == "0":
+                self.value = algo
+            else:
+                self.value += str(algo)
+
+        if algo == "C":
+            self.value = "0"
+        
+        if algo == "+/-" and self.value != "0":
+            if self.value[0] == "-":
+                self.value = self.value[1:]
+            else:
+                self.value = "-" + self.value
+
+        if algo == "," and "," not in self.value:
+            self.value += str(algo)
+        self.lbl.config(text=self.value)
 
 class Selector(ttk.Radiobutton):
     pass
