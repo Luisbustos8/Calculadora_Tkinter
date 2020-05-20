@@ -25,7 +25,7 @@ class TestSelector(tkinterTestcase.tkTestCase):
         self.assertTrue(isinstance(children["rbtn_romano"],ttk.Radiobutton))
         self.assertTrue(isinstance(children["rbtn_normal"],ttk.Radiobutton))
         
-
+        
     def test_init_value_R(self):
         r_selector = calculator.Selector(self.root, "R")
         self.assertEqual(r_selector.status, "R")
@@ -33,9 +33,10 @@ class TestSelector(tkinterTestcase.tkTestCase):
     def test_click_change_status(self):
         rbtn_romano = self.s.children["rbtn_romano"]
         self.assertEqual(self.s.status, "N")
-        rbtn_romano.event_generate("<Button-1")
+        rbtn_romano.invoke()
         self.assertEqual(self.s.status, "R")
 
+    
 
 
         
